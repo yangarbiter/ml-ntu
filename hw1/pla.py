@@ -19,10 +19,12 @@ class PLA():
             update = False
             self.all_w.append(self.w)
             for i in xrange(len(X)):
-                x = X.pop()
-                X.insert(0, x)
-                _y = y.pop()
-                y.insert(0, _y)
+                x = X[0]
+                X.remove(x)
+                X.append(x)
+                _y = y[0]
+                y.remove(_y)
+                y.append(_y)
                 if self._sign(np.dot(self.w, np.array(x))) != _y:
                     self.w = self.w + self.eta * np.array(x) * _y
                     update = True
@@ -31,11 +33,12 @@ class PLA():
             if update == False:
                 break
         self.all_w.append(self.w)
+        return len(self.all_w)
 
 def exp15(X, y):
     pla = PLA(np.array([0] * np.shape(X)[1]))
-    pla.train(X, y)
-    print("total updates: %d" % len(pla.all_w))
+    print("[15]total updates: %d" % pla.train(X, y))
+    #print("[15]total updates: %d" % len(pla.all_w))
 
 def exp16(X, y):
     ans = 0
@@ -47,9 +50,9 @@ def exp16(X, y):
         y = list(y)
 
         pla = PLA(np.array([0] * np.shape(X)[1]))
-        pla.train(X, y)
-        ans += len(pla.all_w)
-    print("avg total updates: %f" % (ans / 2000.0))
+        ans += pla.train(X, y)
+        #ans += len(pla.all_w)
+    print("[16]avg total updates: %f" % (ans / 2000.0))
 
 def exp17(X, y):
     ans = 0
@@ -61,9 +64,9 @@ def exp17(X, y):
         y = list(y)
 
         pla = PLA(np.array([0] * np.shape(X)[1]), eta=0.5)
-        pla.train(X, y)
-        ans += len(pla.all_w)
-    print("avg total updates: %f" % (ans / 2000.0))
+        ans += pla.train(X, y)
+        #ans += len(pla.all_w)
+    print("[17]avg total updates: %f" % (ans / 2000.0))
 
 
 def main():
@@ -81,9 +84,9 @@ def main():
             line = f.readline()
 
     print("===============Running experiments==============")
-    exp15(X, y)
-    exp16(X, y)
-    exp17(X, y)
+    exp15(list(X), list(y))
+    exp16(list(X), list(y))
+    exp17(list(X), list(y))
 
 
 if __name__ == "__main__":
