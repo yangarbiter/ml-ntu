@@ -14,6 +14,7 @@ class PLA():
         else: return -1
 
     def train(self, X, y):
+        updates = 0
         idx = 0
         while True:
             update = False
@@ -26,6 +27,7 @@ class PLA():
                 y.remove(_y)
                 y.append(_y)
                 if self._sign(np.dot(self.w, np.array(x))) != _y:
+                    updates += 1
                     self.w = self.w + self.eta * np.array(x) * _y
                     update = True
                     #print x, self.w
@@ -33,7 +35,7 @@ class PLA():
             if update == False:
                 break
         self.all_w.append(self.w)
-        return len(self.all_w)
+        return updates
 
 def exp15(X, y):
     pla = PLA(np.array([0] * np.shape(X)[1]))
